@@ -13,6 +13,13 @@ typedef struct s_hash_algo {
 	size_t	digest_size;
 }	t_hash_algo;
 
+typedef struct s_md5_context {
+	uint32_t	a, b, c, d;
+	uint8_t		buffer[64];
+	size_t		buffer_len;
+	uint64_t	total_len;
+}	t_md5_context;
+
 void    print_error(char *s);
 
 # endif
