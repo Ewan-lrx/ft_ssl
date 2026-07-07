@@ -18,6 +18,7 @@ typedef struct s_md5_context {
 	uint8_t		buffer[64];
 	size_t		buffer_len;
 	uint64_t	total_len;
+	size_t		current_round;
 }	t_md5_context;
 
 void    print_error(char *s);
