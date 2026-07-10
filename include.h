@@ -4,6 +4,8 @@
 # include "ft_printf/ft_printf.h"
 # include <stddef.h>
 # include <unistd.h>
+# include <stdint.h>
+# include <math.h>
 
 
 typedef struct s_hash_algo {
@@ -20,6 +22,13 @@ typedef struct s_md5_context {
 	uint64_t	total_len;
 	size_t		current_round;
 }	t_md5_context;
+
+typedef struct s_flags {
+	int	p_flag;
+	int	r_flag;
+	int	q_flag;
+	int	s_flag;
+}	t_flags;
 
 void    print_error(char *s);
 

@@ -45,8 +45,10 @@ void	md5_process_block(void *context, uint8_t *data)
 	uint32_t	old_a, old_b, old_c, old_d, temp;
 	t_md5_conext	*c;
 	size		g;
+	uint32_t	k;
 
 	c = (t_md5_context *)context;
+	k = c->(4294967296.0 * fabs(sin(c->current_round)));
 	old_a = c->a;
 	old_b = c->b;
 	old_c = c->c;
@@ -73,4 +75,7 @@ void	md5_process_block(void *context, uint8_t *data)
 	{
 		temp = old_c ^ (old_b || !old_d);
 		g = (7 * c->current_round) % 16;
-	c->b = old_a + temp + data + 
+	}
+	c->b = old_a + temp + data + k;
+	c->current_round++;
+}
