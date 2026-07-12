@@ -40,42 +40,54 @@ void	md5_update(void *context, uint8_t *data, size_t len)
 	}
 }
 
-void	md5_process_block(void *context, uint8_t *data)
+void md5_process_block(void *context, uint8_t *data)
 {
-	uint32_t	old_a, old_b, old_c, old_d, temp;
-	t_md5_conext	*c;
-	size		g;
-	uint32_t	k;
-
+	t_md5_context *c;
+	uint32_t a, b, cc, d;
+	uint32_t m[16];
+	uint32_t f, temp;
+    	int i, g;
+    
 	c = (t_md5_context *)context;
-	k = c->(4294967296.0 * fabs(sin(c->current_round)));
-	old_a = c->a;
-	old_b = c->b;
-	old_c = c->c;
-	old_d = c->d;
-	c->a = old_d;
-	c->c = old_b;
-	c->d = old_c;
-	if 0 <= c->current_round <= 15
-	{
-		temp = (old_b && old_c) || (!old_b && old_d);
-		g = c->current_round;
+    	for (i = 0; i < 16; i++)
+		m[i] = (uint32_t)data[i * 4]
+	   		| ((uint32_t)data[i * 4 + 1] << 8)
+	   		| ((uint32_t)data[i * 4 + 2] << 16)
+	   		| ((uint32_t)data[i * 4 + 3] << 24);
+    	a = c->a;
+    	b = c->b;
+    	cc = c->c;
+    	d = c->d;
+    	for (i = 0; i < 64; i++)
+    	{
+		if (i < 16)
+		{
+	    		f = (b & cc) | (~b & d);
+	    		g = i;
+		}
+		else if (i < 32)
+		{
+	    		f = (d & b) | (~d & cc);
+	    		g = (5 * i + 1) % 16;
+		}
+		else if (i < 48)
+		{
+	    		f = b ^ cc ^ d;
+	   		g = (3 * i + 5) % 16;
+		}
+		else
+		{
+	    		f = cc ^ (b | ~d);
+	    		g = (7 * i) % 16;
+		}
+		temp = d;
+		d = cc;
+		cc = b;
+		b = b + rotl32(a + f + K[i] + m[g], S[i]);
+		a = temp;
 	}
-	else if 16 <= c->current_round->31
-	{
-		temp = (old_d && old_b) || (!old_d && old_c);
-		g = (5 * c->current_round + 1) % 16;
-	}
-	else if 32 <= c->current_round <= 47
-	{
-		temp = old_b ^ old_c ^ old_d;
-		g = (3 * c->current_round + 5) % 16;
-	}
-	else if 48 <= c->current_round <= 63
-	{
-		temp = old_c ^ (old_b || !old_d);
-		g = (7 * c->current_round) % 16;
-	}
-	c->b = old_a + temp + data + k;
-	c->current_round++;
+    	c->a += a;
+    	c->b += b;
+    	c->c += cc;
+	c->d += d;
 }
