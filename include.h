@@ -1,6 +1,8 @@
 #ifndef INCLUDE_H
 # define INCLUDE_H
 
+# define rotl32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
+
 # include "ft_printf/ft_printf.h"
 # include <stddef.h>
 # include <unistd.h>
