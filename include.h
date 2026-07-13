@@ -9,6 +9,8 @@
 # include <stdint.h>
 # include <math.h>
 
+extern const uint32_t K[64];
+extern const uint32_t S[64];
 
 typedef struct s_hash_algo {
 	void	(*init)(void *context);
