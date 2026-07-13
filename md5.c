@@ -91,3 +91,31 @@ void md5_process_block(void *context, uint8_t *data)
     	c->c += cc;
 	c->d += d;
 }
+
+void md5_final(void *context, uint8_t *digest)
+{
+    t_md5_context *c;
+    uint64_t bits_len;
+    size_t padding_len;
+    uint8_t padding[64];
+
+    c = (t_md5_context *)context;
+    bits_len = c->total_len * 8;
+    ft_memset(padding, 0, 64);
+    padding[0] = 0x80;
+    if (c->buffer_len < 56)
+        padding_len = 56 - c->buffer_len;
+    else
+        padding_len = 64 + 56 - c->buffer_len;
+    md5_update(c, padding, padding_len);
+    uint8_t size_buffer[8];
+    for (int i = 0; i < 8; i++)
+        size_buffer[i] = (uint8_t)(bits_len >> (i * 8));
+    md5_update(c, size_buffer, 8);
+    for (int i = 0; i < 4; i++) {
+        digest[i]       = (uint8_t)(c->a >> (i * 8));
+        digest[i + 4]   = (uint8_t)(c->b >> (i * 8));
+        digest[i + 8]   = (uint8_t)(c->c >> (i * 8));
+        digest[i + 12]  = (uint8_t)(c->d >> (i * 8));
+    }
+}
