@@ -7,7 +7,6 @@
 # include <stddef.h>
 # include <unistd.h>
 # include <stdint.h>
-# include <math.h>
 
 extern const uint32_t K[64];
 extern const uint32_t S[64];
@@ -35,5 +34,11 @@ typedef struct s_flags {
 }	t_flags;
 
 void    print_error(char *s);
+
+//md5 algorithm functions
+void md5_init(void *context);
+void md5_update(void *context, uint8_t *data, size_t len);
+void md5_process_block(void *context, uint8_t *data);
+void md5_final(void *context, uint8_t *digest);
 
 # endif
