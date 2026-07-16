@@ -26,6 +26,19 @@ typedef struct s_md5_context {
 	size_t		current_round;
 }	t_md5_context;
 
+typedef struct s_data_block {
+        uint32_t        a, b, c, d, e, f, g, h;
+}       t_data_block;
+
+typedef struct s_sha_context {
+        uint32_t        a, b, c, d, e, f, g, h;
+        uint8_t         buffer[64];
+        size_t          buffer_len;
+        uint64_t        total_len;
+        size_t          current_round;
+}       t_sha_context;
+
+
 typedef struct s_flags {
 	int	p_flag;
 	int	r_flag;
