@@ -1,6 +1,6 @@
 CC = cc
 FLAGS = -Wall -Wextra -Werror
-SRC = utils.c main.c
+SRC = utils.c main.c md5_tables.c sha256_tables.c sha256.c md5.c parsing.c
 SRC_OBJ = $(SRC:.c=.o)
 NAME = ft_ssl
 LIBFT_PATH = ./ft_printf
@@ -16,7 +16,6 @@ $(LIBFT):
 
 %.o: %.c
 	@$(CC) $(FLAGS) -I. -c $< -o $@
-:q
 
 clean:
 	@make -C $(LIBFT_PATH) clean --no-print-directory
