@@ -40,6 +40,12 @@ Echo STDIN input alongside its hash:
 echo "hello world" | ./ft_ssl sha256 -p
 ```
 
+Run the tester:
+
+```bash
+make test
+```
+
 Available flags:
 
 | Flag | Effect |
