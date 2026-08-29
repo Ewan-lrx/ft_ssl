@@ -1,9 +1,13 @@
 CC = cc
 FLAGS = -Wall -Wextra -Werror
-SRC = utils.c main.c md5_tables.c sha256_tables.c sha256.c md5.c parsing.c
+HASH_TESTER = tester/hash_tester.sh
+SRC_PATH = src/hash/
+SRC = $(SRC_PATH)utils.c $(SRC_PATH)main.c $(SRC_PATH)md5_tables.c \
+      $(SRC_PATH)sha256_tables.c $(SRC_PATH)sha256.c $(SRC_PATH)md5.c \
+      $(SRC_PATH)parsing.c $(SRC_PATH)hashing.c
 SRC_OBJ = $(SRC:.c=.o)
 NAME = ft_ssl
-LIBFT_PATH = ./ft_printf
+LIBFT_PATH = src/ft_printf
 LIBFT = $(LIBFT_PATH)/libftprintf.a
 
 all: $(NAME)
@@ -28,6 +32,6 @@ fclean: clean
 re: fclean all
 
 test:
-	sh compile.sh
+	sh $(HASH_TESTER)
 
 .PHONY: all clean fclean re test
