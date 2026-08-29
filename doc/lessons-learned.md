@@ -2,17 +2,17 @@
 
 ## Why this project matters to me
 
-I'm a computer science student aiming to specialize in cybersecurity, and cryptography is
-one of the areas I'm actively focusing on right now. Rather than just knowing that "MD5 is
-broken" or "SHA-256 is what you should use instead," I wanted to actually understand why/what makes one hash function different from another internally, what design choices
-affect their security and performance, and what it really means for a function to be
-"one-way" or "collision-resistant" once you've built one yourself instead of just reading
-about it.
+Cryptography is one of the areas I'm actively focusing on as I go deeper into
+cybersecurity, not just knowing that "MD5 is broken" or "SHA-256 is what you should use
+instead," but actually understanding *why*: what makes one hash function different from
+another internally, what design choices affect their security and performance, and what
+it really means for a function to be "one-way" or "collision-resistant" once you've built
+one yourself instead of just reading about it.
 
 This project was also, more directly, a way to push my C and general algorithmic skills.
 Implementing a well-specified algorithm from a written standard, byte by byte, with no
 library to lean on, forces a level of precision that's easy to skip past when just calling
-`hashlib.md5()` in a language like Python. Every design decision in this repo, the
+`hashlib.md5()` in a language like Python. Every design decision in this repo the
 `init`/`update`/`final` pattern, the polymorphism via function pointers, the streaming
 approach to file handling came out of trying to write something correct, not just
 something that runs.
