@@ -4,8 +4,7 @@
 
 I'm a computer science student aiming to specialize in cybersecurity, and cryptography is
 one of the areas I'm actively focusing on right now. Rather than just knowing that "MD5 is
-broken" or "SHA-256 is what you should use instead," I wanted to actually understand *why*
-— what makes one hash function different from another internally, what design choices
+broken" or "SHA-256 is what you should use instead," I wanted to actually understand why/what makes one hash function different from another internally, what design choices
 affect their security and performance, and what it really means for a function to be
 "one-way" or "collision-resistant" once you've built one yourself instead of just reading
 about it.
@@ -13,9 +12,9 @@ about it.
 This project was also, more directly, a way to push my C and general algorithmic skills.
 Implementing a well-specified algorithm from a written standard, byte by byte, with no
 library to lean on, forces a level of precision that's easy to skip past when just calling
-`hashlib.md5()` in a language like Python. Every design decision in this repo — the
+`hashlib.md5()` in a language like Python. Every design decision in this repo, the
 `init`/`update`/`final` pattern, the polymorphism via function pointers, the streaming
-approach to file handling — came out of trying to write something correct, not just
+approach to file handling came out of trying to write something correct, not just
 something that runs.
 
 ## Difficulties
@@ -25,13 +24,13 @@ Setting aside typos and copy-paste mistakes, a few genuine conceptual hurdles st
 - **Polymorphism in C vs. Python.** Coming from Python, where polymorphism is essentially
   free (the interpreter resolves the right method automatically based on an object's
   type), I had to rebuild that idea from scratch in C. There's no such mechanism built into
-  the language — a struct holding function pointers (`t_hash_algo`, with `init`/`update`/
+  the language, a struct holding function pointers (`t_hash_algo`, with `init`/`update`/
   `final`) is the entire "trick," and understanding that this struct is not some special
   language construct, just an ordinary struct whose fields happen to be addresses of code
   instead of addresses of data, took some real back-and-forth before it clicked.
 
 - **Endianness.** MD5 is little-endian throughout; SHA-256 is big-endian throughout.
-  Getting this wrong doesn't crash anything — it silently produces a wrong-but-plausible
+  Getting this wrong doesn't crash anything, it silently produces a wrong-but-plausible
   digest. Implementing both algorithms side by side made it very clear how easy it is to
   carry an assumption from one context into another without noticing, and how much that
   reinforced the value of testing against official vectors rather than trusting that "it
@@ -44,18 +43,11 @@ Setting aside typos and copy-paste mistakes, a few genuine conceptual hurdles st
   formula from a reference.
 
 - **Streaming design.** My first instinct was to pad the entire message into one big
-  buffer before processing it — simple to reason about, but it doesn't scale to large
+  buffer before processing it, simple to reason about, but it doesn't scale to large
   files and doesn't reflect how real implementations work. Rebuilding the logic around a
   small fixed-size buffer that gets flushed block by block, with the padding computed only
   once at the very end, was a good exercise in separating "what the algorithm
   conceptually does" from "how to implement it without unnecessary memory use."
-
-- **Build system / linkage errors.** Sharing constant tables (`K[]`, `S[]`) and the command
-  dispatch table across multiple `.c` files surfaced real linker errors (`multiple
-  definition of ...`) the first time I got the `static`/`extern` distinction wrong. It was
-  a useful, very concrete way to understand the difference between *declaring* something
-  ("this exists somewhere") and *defining* it ("here is its value"), which C makes you
-  think about explicitly in a way higher-level languages usually hide.
 
 ## What's next
 
