@@ -9,16 +9,34 @@ For now, only the **hashing** module is implemented.
 
 ## Usage
 
+Build the project:
+
 ```bash
 make
+```
 
+Hash a string directly:
+
+```bash
 ./ft_ssl md5 -s "hello world"
 ./ft_ssl sha256 -s "hello world"
+```
 
+Hash the contents of STDIN:
+
+```bash
 echo "hello world" | ./ft_ssl md5
+```
 
+Hash a file:
+
+```bash
 ./ft_ssl md5 my_file.txt
+```
 
+Echo STDIN input alongside its hash:
+
+```bash
 echo "hello world" | ./ft_ssl sha256 -p
 ```
 
@@ -52,6 +70,12 @@ and the main difficulties encountered along the way.
 - **Argument parsing**: flag recognition stops as soon as the first positional argument
   (a filename) is encountered, matching the behavior expected by the subject — a `-s`
   appearing after a filename is then treated as a literal filename rather than an option.
+
+## Resources
+
+- [RFC 1321 — The MD5 Message-Digest Algorithm](https://www.rfc-editor.org/rfc/rfc1321)
+- [FIPS 180-4 — Secure Hash Standard (SHA-256 specification)](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf)
+- [OpenSSL documentation](https://docs.openssl.org/)
 
 ## Coming up
 
