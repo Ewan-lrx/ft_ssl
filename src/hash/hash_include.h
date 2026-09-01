@@ -98,4 +98,14 @@ int	cmd_md5(int argc, char **argv);
 int	cmd_sha256(int argc, char **argv);
 int	process_command(t_hash_algo *algo, t_flags *flags, char *label, char *cmd);
 
+//bonus
+
+typedef struct s_whirlpool_context {
+	uint8_t		matrix[8][8];
+	uint32_t	data[16];
+	uint8_t		buffer[64];
+	size_t		buffer_len;
+	uint64_t	total_len;
+}	t_whirlpool_context;
+
 # endif
