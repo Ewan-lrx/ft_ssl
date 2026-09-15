@@ -46,6 +46,24 @@ int	cmd_sha256(int argc, char **argv)
 	return (ret);
 }
 
+int	cmd_whirlpool(int argc, char **argv)
+{
+	t_hash_algo	algo;
+	t_flags		flags;
+	int			ret;
+
+	algo.init = whirlpool_init;
+	algo.update = whirlpool_update;
+	algo.final = whirlpool_final;
+	algo.digest_size = 64;
+	init_flags(&flags);
+	if (parse_args(argc, argv, &flags))
+		return (1);
+	ret = process_command(&algo, &flags, "WHIRLPOOL", "whirlpool");
+	free(flags.inputs);
+	return (ret);
+}
+
 int	process_command(t_hash_algo *algo, t_flags *flags, char *label, char *cmd)
 {
 	int	i;

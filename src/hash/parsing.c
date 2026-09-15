@@ -3,6 +3,7 @@
 static t_command        g_commands[] = {
         {"md5", cmd_md5},
         {"sha256", cmd_sha256},
+	{"whirlpool", cmd_whirlpool},
         {NULL, NULL}
 };
 

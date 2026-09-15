@@ -96,16 +96,27 @@ void	print_result(t_flags *flags, char *label, uint8_t *digest, size_t len, char
 void	init_flags(t_flags *flags);
 int	cmd_md5(int argc, char **argv);
 int	cmd_sha256(int argc, char **argv);
+int     cmd_whirlpool(int argc, char **argv);
 int	process_command(t_hash_algo *algo, t_flags *flags, char *label, char *cmd);
 
 //bonus
 
+extern const uint8_t WHIRLPOOL_MDS[8][8];
+extern const uint8_t WHIRLPOOL_SBOX[256];
+extern const uint8_t WHIRLPOOL_RC[11][8][8];
+
 typedef struct s_whirlpool_context {
 	uint8_t		matrix[8][8];
-	uint32_t	data[16];
+	uint8_t		hash[8][8];
+	uint8_t		temp[8][8];
 	uint8_t		buffer[64];
 	size_t		buffer_len;
 	uint64_t	total_len;
 }	t_whirlpool_context;
+
+void    whirlpool_init(void *context);
+void    whirlpool_process_block(t_whirlpool_context *c, uint8_t *block);
+void    whirlpool_update(void *context, uint8_t *data, size_t len);
+void    whirlpool_final(void *context, uint8_t *digest);
 
 # endif

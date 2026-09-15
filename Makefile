@@ -5,7 +5,11 @@ SRC_PATH = src/hash/
 SRC = $(SRC_PATH)utils.c $(SRC_PATH)main.c $(SRC_PATH)md5_tables.c \
       $(SRC_PATH)sha256_tables.c $(SRC_PATH)sha256.c $(SRC_PATH)md5.c \
       $(SRC_PATH)parsing.c $(SRC_PATH)hashing.c
+BONUS_SRC = $(SRC_PATH)whirlpool.c $(SRC_PATH)whirlpool_tables.c
+ALL_SRC = $(SRC) $(BONUS_SRC)
 SRC_OBJ = $(SRC:.c=.o)
+SRC_BONUS_OBJ = $(BONUS_SRC:.c=.o)
+ALL_OBJ = $(SRC_OBJ) $(SRC_BONUS_OBJ)
 NAME = ft_ssl
 LIBFT_PATH = src/ft_printf
 LIBFT = $(LIBFT_PATH)/libftprintf.a
@@ -33,5 +37,10 @@ re: fclean all
 
 test:
 	sh $(HASH_TESTER)
+
+bonus: $(LIBFT) $(ALL_OBJ)
+	@$(CC) $(FLAGS) $(ALL_OBJ) $(LIBFT) -o $(NAME)
+
+re_bonus: fclean bonus
 
 .PHONY: all clean fclean re test
