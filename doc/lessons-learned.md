@@ -49,10 +49,33 @@ Setting aside typos and copy-paste mistakes, a few genuine conceptual hurdles st
   once at the very end, was a good exercise in separating "what the algorithm
   conceptually does" from "how to implement it without unnecessary memory use."
 
+- **Debugging a cipher built from several independent transformations.** Whirlpool's
+  internal block cipher combines multiple layers (byte substitution, a row/column shift, a
+  matrix-based diffusion step) that each looked individually correct in isolation, yet the
+  combined output was still wrong. A few of these bugs happened to partially mask each
+  other's effect, which meant the usual approach of testing the whole function against a
+  reference vector wasn't enough on its own, I had to reason about, and eventually isolate
+  and test, each transformation independently to figure out which layer, or combination of
+  layers, was actually at fault.
+
+- **Reusing one function for two purposes.** Whirlpool's key schedule doesn't use a
+  separate algorithm, it reuses the exact same round function that encrypts the data,
+  just fed a fixed constant instead of the evolving state. Recognizing that this was a
+  deliberate design choice, rather than a shortcut, changed how I structured the code: the
+  round transformation needed to be written as a single reusable building block from the
+  start, instead of being duplicated for the key schedule as an afterthought.
+
 ## What's next
 
+Whirlpool is now implemented and verified against official test vectors, including
+multi-block messages. Its internal structure did turn out to closely mirror AES, which I
+had already implemented from scratch in Python, and having that background made the S-Box,
+matrix state, and Galois field diffusion steps feel familiar rather than entirely new,
+even though tracking down the remaining bugs still took real, careful work.
+
 This hashing module is meant to be the first of three: symmetric and asymmetric
-encryption are planned as future additions to this repository. I'm also considering
-implementing Whirlpool as a bonus, partly because its internal structure closely mirrors
-AES, which I had already implemented from scratch in Python — a good opportunity to
-carry that understanding into a new context and reinforce it further.
+encryption are planned as future additions to this repository. Separately, I'm also
+starting an intermediate project on linear and differential cryptanalysis, building and
+then breaking a small custom cipher. I'm keeping it deliberately independent from the
+school's upcoming symmetric-encryption project so that the two end up exploring different
+classes of attack rather than covering the same ground twice.
