@@ -16,8 +16,8 @@ LIBFT = $(LIBFT_PATH)/libftprintf.a
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(SRC_OBJ)
-	@$(CC) $(FLAGS) $(SRC_OBJ) $(LIBFT) -o $(NAME)
+$(NAME): $(LIBFT) $(ALL_OBJ)
+	@$(CC) $(FLAGS) $(ALL_OBJ) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	@make -C $(LIBFT_PATH) all --no-print-directory
@@ -36,11 +36,6 @@ fclean: clean
 re: fclean all
 
 test:
-	sh $(HASH_TESTER)
-
-bonus: $(LIBFT) $(ALL_OBJ)
-	@$(CC) $(FLAGS) $(ALL_OBJ) $(LIBFT) -o $(NAME)
-
-re_bonus: fclean bonus
+	bash $(HASH_TESTER)
 
 .PHONY: all clean fclean re test
