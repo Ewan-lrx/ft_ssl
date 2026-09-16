@@ -20,6 +20,7 @@ Hash a string directly:
 ```bash
 ./ft_ssl md5 -s "hello world"
 ./ft_ssl sha256 -s "hello world"
+./ft_ssl whirlpool -s "hello world"
 ```
 
 Hash the contents of STDIN:
@@ -61,6 +62,7 @@ Available flags:
 |-----------|-------------|--------------------------|
 | MD5       | 128 bits    | [doc/md5.md](./doc/md5.md) |
 | SHA-256   | 256 bits    | [doc/sha256.md](./doc/sha256.md) |
+| WHIRLPOOL | 512 bits    | [doc/whirlpool.md](./doc/whirlpool.md) |
 
 Each file in `doc/` details how the algorithm works, the approach taken to implement it,
 and the main difficulties encountered along the way.
@@ -72,7 +74,7 @@ and the main difficulties encountered along the way.
   files of arbitrary size without being limited by available RAM.
 - **Polymorphism via function pointers**: a `t_hash_algo` struct groups the `init`/`update`/
   `final` functions of each algorithm, letting all parsing, input-reading (file/string/stdin),
-  and output logic be written once and shared between MD5 and SHA-256.
+  and output logic be written once and shared between MD5, SHA-256, and Whirlpool.
 - **Argument parsing**: flag recognition stops as soon as the first positional argument
   (a filename) is encountered, matching the behavior expected by the subject — a `-s`
   appearing after a filename is then treated as a literal filename rather than an option.
@@ -81,6 +83,8 @@ and the main difficulties encountered along the way.
 
 - [RFC 1321 — The MD5 Message-Digest Algorithm](https://www.rfc-editor.org/rfc/rfc1321)
 - [FIPS 180-4 — Secure Hash Standard (SHA-256 specification)](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf)
+- [Barreto, P. S. L. M., Rijmen, V. — The Whirlpool Hashing Function](https://www.researchgate.net/publication/228610491_The_Whirlpool_hashing_function)
+- [ISO/IEC 10118-3:2018 — Dedicated Hash-Function 7 (WHIRLPOOL)](https://www.iso.org/standard/67116.html)
 - [OpenSSL documentation](https://docs.openssl.org/)
 
 ## Coming up
