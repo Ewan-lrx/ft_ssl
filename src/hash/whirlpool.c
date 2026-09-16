@@ -64,7 +64,7 @@ static void	shift_columns(uint8_t	state[8][8])
 		i = 0;
 		while (i < 8)
 		{
-			state[(i + 8 - j) % 8][j] = tmp[i];
+			state[(i + j) % 8][j] = tmp[i];
 			i ++;
 		}
 		j++;
@@ -88,7 +88,7 @@ static void	mix_rows(uint8_t state[8][8])
 			k = 0;
 			while (k < 8)
 			{
-				tmp[i][j] ^= gf_mul(state[i][k], WHIRLPOOL_MDS[j][k]);
+				tmp[i][j] ^= gf_mul(state[i][k], WHIRLPOOL_MDS[k][j]);
 				k++;
 			}
 			j++;
@@ -131,8 +131,8 @@ void	whirlpool_process_block(t_whirlpool_context *c, uint8_t *block)
 		j = 0;
 		while (j < 8)
 		{
-			state[i][j] = block[i + 8 * j];
-			key[i][j] = ((uint8_t *)c->hash)[i + 8 * j];
+			state[i][j] = block[i * 8 + j];
+			key[i][j] = ((uint8_t *)c->hash)[i * 8 + j];
 			j++;
 		}
 		i++;
@@ -156,7 +156,7 @@ void	whirlpool_process_block(t_whirlpool_context *c, uint8_t *block)
 		j = 0;
 		while (j < 8)
 		{
-			((uint8_t *)c->hash)[i + 8 * j] ^= block[i + 8 * j] ^ state[i][j];
+			((uint8_t *)c->hash)[i * 8 + j] ^= block[i * 8 + j] ^ state[i][j];
 			j++;
 		}
 		i++;
@@ -189,7 +189,6 @@ void	whirlpool_final(void *context, uint8_t *digest)
 	t_whirlpool_context	*c;
 	uint64_t			bit_len;
 	size_t				i;
-	size_t				j;
 
 	i = 0;
 	c = (t_whirlpool_context *)context;
@@ -212,15 +211,4 @@ void	whirlpool_final(void *context, uint8_t *digest)
 	}
 	whirlpool_process_block(c, c->buffer);
 	ft_memcpy(digest, c->hash, 64);
-	i = 0;
-	while (i < 8)
-	{
-    		j = 0;
-    		while (j < 8)
-    		{
-        		digest[i + 8 * j] = ((uint8_t *)c->hash)[i + 8 * j];
-        		j++;
-  		}
-    		i++;
-	}
 }
