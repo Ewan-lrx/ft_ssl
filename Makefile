@@ -27,7 +27,7 @@ $(LIBFT):
 
 clean:
 	@make -C $(LIBFT_PATH) clean --no-print-directory
-	@rm -f $(SRC_OBJ)
+	@rm -f $(ALL_OBJ)
 
 fclean: clean
 	@make -C $(LIBFT_PATH) fclean --no-print-directory
